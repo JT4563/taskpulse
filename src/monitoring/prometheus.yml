@@ -1,0 +1,43 @@
+# ===============================================
+# src/monitoring/prometheus.yml
+# -----------------------------------------------
+# Prometheus configuration
+#
+# Configuration file for Prometheus metrics collection,
+# defining scrape targets and collection intervals.
+# ===============================================
+
+# 1️⃣ Global configuration
+#     - Set scrape interval to 15 seconds
+#     - Set evaluation interval to 15 seconds
+#     - Define global external labels
+#     - Configure scrape timeout
+#     - Set query log file
+
+# 2️⃣ Scrape configurations
+#     - Define job name for TaskPulse backend
+#     - Set scrape interval for backend metrics
+#     - Configure target endpoints
+#     - Add relabeling configurations
+#     - Set metric path to /api/metrics
+#     - Configure TLS and authentication
+
+# 3️⃣ Target discovery
+#     - Define static targets for local development
+#     - Configure DNS discovery for production
+#     - Set up file-based service discovery
+#     - Handle target grouping
+#     - Configure target relabeling
+
+# 4️⃣ Metric relabeling
+#     - Define metric relabeling rules
+#     - Filter unwanted metrics
+#     - Add custom labels to metrics
+#     - Drop high cardinality metrics
+#     - Rename metrics if needed
+
+# 5️⃣ Alerting configuration
+#     - Configure alertmanager endpoints
+#     - Set up alerting rules files
+#     - Define alerting timeouts
+#     - Configure alert relabeling

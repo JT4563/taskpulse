@@ -1,0 +1,63 @@
+# ===============================================
+# src/monitoring/grafana/dashboards/dashboard.yml
+# -----------------------------------------------
+# Grafana dashboard configuration
+#
+# Configuration for provisioning Grafana dashboards
+# with predefined panels for system monitoring.
+# ===============================================
+
+# 1️⃣ Dashboard provider configuration
+#     - Define API version for dashboard provisioning
+#     - Set up dashboard providers
+#     - Configure folder structure
+#     - Set update interval
+#     - Define dashboard file patterns
+
+# 2️⃣ TaskPulse system dashboard
+#     - Define dashboard title and UID
+#     - Configure dashboard tags
+#     - Set up time settings
+#     - Define refresh intervals
+#     - Configure timezone settings
+
+# 3️⃣ HTTP metrics panel
+#     - Create panel for request rate
+#     - Add panel for response time
+#     - Configure error rate visualization
+#     - Set up status code distribution
+#     - Add throughput metrics
+
+# 4️⃣ Queue metrics panel
+#     - Create panel for pending tasks
+#     - Add panel for processing time
+#     - Configure worker utilization
+#     - Set up queue depth visualization
+#     - Add task completion rate
+
+# 5️⃣ Database metrics panel
+#     - Create panel for query performance
+#     - Add panel for connection pool
+#     - Configure database latency
+#     - Set up error rate monitoring
+#     - Add throughput metrics
+
+# 6️⃣ Cache metrics panel
+#     - Create panel for cache hit ratio
+#     - Add panel for memory usage
+#     - Configure eviction rate
+#     - Set up key statistics
+#     - Add latency metrics
+
+# 7️⃣ System metrics panel
+#     - Create panel for CPU usage
+#     - Add panel for memory consumption
+#     - Configure garbage collection
+#     - Set up event loop lag
+#     - Add heap statistics
+
+# 8️⃣ Alerting configuration
+#     - Define alert rules
+#     - Configure notification channels
+#     - Set up alert thresholds
+#     - Configure alert annotations

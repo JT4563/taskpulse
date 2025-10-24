@@ -1,0 +1,42 @@
+# ===============================================
+# src/monitoring/grafana/datasources/prometheus.yml
+# -----------------------------------------------
+# Grafana datasource configuration
+#
+# Configuration for connecting Grafana to Prometheus
+# as the primary metrics datasource.
+# ===============================================
+
+# 1️⃣ Datasource definition
+#     - Define datasource API version
+#     - Set datasource name to Prometheus
+#     - Specify datasource type as prometheus
+#     - Configure access mode (proxy/direct)
+#     - Set URL to Prometheus service
+#     - Configure authentication settings
+
+# 2️⃣ Connection settings
+#     - Define connection timeout
+#     - Configure HTTP method (GET/POST)
+#     - Set up TLS configuration
+#     - Configure basic authentication
+#     - Handle custom headers
+
+# 3️⃣ Query settings
+#     - Set query timeout
+#     - Configure maximum series limit
+#     - Define maximum datapoints
+#     - Set up caching options
+#     - Configure query splitting
+
+# 4️⃣ Health check
+#     - Configure health check endpoint
+#     - Set health check timeout
+#     - Define health check interval
+#     - Handle connection retries
+
+# 5️⃣ Metadata settings
+#     - Define datasource version
+#     - Set editable flag
+#     - Configure default datasource
+#     - Add custom metadata

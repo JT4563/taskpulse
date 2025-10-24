@@ -1,0 +1,64 @@
+// ===============================================
+// src/models/prisma/schema.prisma
+// -----------------------------------------------
+// Prisma schema for PostgreSQL. Run migrations with `npx prisma migrate dev`.
+//
+// Defines the database schema and models for the TaskPulse application,
+// including the Task entity and all related configurations.
+// ===============================================
+
+// 1️⃣ Prisma client generator
+//     - Configure Prisma Client JS generator
+//     - Set up client output directory
+//     - Define binary targets
+//     - Configure preview features
+//     - Set up engine type
+
+// 2️⃣ Database datasource
+//     - Configure PostgreSQL provider
+//     - Set database URL from environment
+//     - Configure connection pool
+//     - Set up SSL options
+//     - Define shadow database URL
+
+// 3️⃣ Task model
+//     - Define Task entity with all fields
+//     - Set up primary key with autoincrement
+//     - Configure string fields for title and status
+//     - Add optional payload and result fields
+//     - Set up timestamp fields with defaults
+//     - Configure updatedAt with @updatedAt directive
+//     - Define default status as "PENDING"
+//     - Set up model indexes
+//     - Configure field validations
+
+// 4️⃣ Task status enum (optional)
+//     - Define enum for task statuses
+//     - Include PENDING, PROCESSING, COMPLETED, FAILED
+//     - Set up default enum values
+//     - Configure enum validation
+
+// 5️⃣ Model relations (future)
+//     - Define relationships between models
+//     - Set up foreign keys
+//     - Configure cascade options
+//     - Define relation names
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Task {
+  id        Int      @id @default(autoincrement())
+  title     String
+  status    String   @default("PENDING")
+  payload   String?
+  result    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
