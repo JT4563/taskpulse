@@ -11,11 +11,40 @@ import pRetry from "p-retry";
 
 // 1️⃣ initializePrisma()
 //     - Create Prisma Client instance
+const prisma = new PrismaClient({
+  log: ["info", "warn", "error"],
+});
 //     - Configure database connection pooling~
+// Prisma internally manages connection pooling via the underlying driver.
+// However, production systems should still handle transient startup failures
+// (like PostgreSQL not ready yet). We'll handle this via `p-retry` below.
 //     - Set up connection retry logic
+async function intializePrisma() {
+  await pRetry(
+    async () => {
+      await prisma.$connect();
+    },
+    {
+      retries: 5,// maximum retry attempts
+      factor: 2,// exponential backoff factor
+      onFailedAttempt: (error) => {
+        console.warn(
+          `Primsa connection attempt ${error.attemptNumber} failed, retrying...`
+        );
+      },
+    }
+  );
+}
 //     - Handle database connection errors
+initializePrisma().catch(()=>{
+  console.log("Failed to connect with the postgres")
+});
 //     - Log connection status
+initializePrisma().then(()=>{
+  console.log("primsa successfully connected to postgres")
+});
 //     - Export Prisma client singleton
+export {prisma};
 
 // 2️⃣ createTask(taskData)
 //     - Validate task data structure
