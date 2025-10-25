@@ -14,12 +14,22 @@
 //     - Configure preview features
 //     - Set up engine type
 
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/client"
+}
+
 // 2️⃣ Database datasource
 //     - Configure PostgreSQL provider
 //     - Set database URL from environment
 //     - Configure connection pool
 //     - Set up SSL options
 //     - Define shadow database URL
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
 
 // 3️⃣ Task model
 //     - Define Task entity with all fields
@@ -32,11 +42,32 @@
 //     - Set up model indexes
 //     - Configure field validations
 
+model Task {
+  id        Int       @id @default(autoincrement())
+  title     String
+  status    TaskStatus @default(PENDING)
+  payload   String?
+  result    String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Indexes for better query performance
+  @@index([status])
+  @@index([createdAt])
+}
+
 // 4️⃣ Task status enum (optional)
 //     - Define enum for task statuses
 //     - Include PENDING, PROCESSING, COMPLETED, FAILED
 //     - Set up default enum values
 //     - Configure enum validation
+
+enum TaskStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
 
 // 5️⃣ Model relations (future)
 //     - Define relationships between models
@@ -44,21 +75,18 @@
 //     - Configure cascade options
 //     - Define relation names
 
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-model Task {
-  id        Int      @id @default(autoincrement())
-  title     String
-  status    String   @default("PENDING")
-  payload   String?
-  result    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+// Future model extensions could include:
+// model User {
+//   id        Int      @id @default(autoincrement())
+//   email     String   @unique
+//   tasks     Task[]
+// }
+//
+// model TaskRun {
+//   id        Int      @id @default(autoincrement())
+//   taskId    Int
+//   task      Task     @relation(fields: [taskId], references: [id])
+//   status    String
+//   output    String?
+//   createdAt DateTime @default(now())
+// }
