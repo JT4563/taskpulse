@@ -6,10 +6,12 @@
 // Manages database connections and provides data access layer
 // for all PostgreSQL operations using Prisma Client.
 // ===============================================
+import { PrismaClient } from "@prisma/client";
+import pRetry from "p-retry";
 
 // 1️⃣ initializePrisma()
 //     - Create Prisma Client instance
-//     - Configure database connection pooling
+//     - Configure database connection pooling~
 //     - Set up connection retry logic
 //     - Handle database connection errors
 //     - Log connection status
