@@ -192,8 +192,33 @@ export async function delteTask(id) {
 // ===============================================
 // 7️⃣ getTaskStatistics()
 // ===============================================
+
 //     - Aggregate task counts by status
+export async function getTaskStatistics() {
+  try {
+    const stats = await prisma.task.groupBy({
+      by: ["status"],
+      _count: { status: true },
+    });
+
 //     - Calculate processing metrics
+    const total = stats.reduce((sum, s) => sum + s._count.status, 0);
+
 //     - Return statistical data
+    const formattedStats = stats.map((s) => ({
+      status: s.status,
+      count: s._count.status,
+      percentage: ((s._count.status / total) * 100).toFixed(2) + "%",
+    }));
+
 //     - Optimize aggregation queries
+// Prisma’s `groupBy` translates to SQL-level GROUP BY queries (very efficient).
+
 //     - Handle empty datasets
+    return formattedStats.length ? formattedStats : [];
+
+  } catch (err) {
+    console.error(" Error fetching task statistics:", err);
+    throw err;
+  }
+}
