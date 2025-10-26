@@ -6,7 +6,13 @@
 // Manages task queue operations including publishing tasks,
 // consuming messages, and handling queue connections.
 // ===============================================
-
+import amqlib from "amqlib";
+import pRetry from "p-retry";
+import process from "process";
+const RABBITMQ_URL = process.env.RABBITMQ_URL;
+const QUEUE_NAME = process.env.RABBITMQ_QUEUE;
+let connection = null;
+let channel = null;
 // 1️⃣ initializeQueueConnection()
 //     - Establish connection to RabbitMQ server
 //     - Create communication channel
@@ -15,7 +21,39 @@
 //     - Handle connection errors and retries
 //     - Set up connection recovery mechanisms
 //     - Export queue connection singleton
-
+export async function initializeQueueConnection() {
+  try {
+    // Retry connecting 5 times if fails
+    connection = await pRetry(
+      async () => {
+        console.log("🔄 Connecting to RabbitMQ...");
+        return await amqplib.connect(RABBITMQ_URL);
+      },
+      {
+        retries: 5,
+        onFailedAttempt: (err) =>
+          console.warn(
+            ` RabbitMQ connection failed (${err.retriesLeft} retries left)`
+          ),
+      }
+    );
+    channel = await connection.createChannel();
+    await channel.assertQueue(QUEUE_NAME, { durable: true });
+    await channel.prefetch(5);
+    connection.on("error", (err) =>
+      console.error("RabbitMQ connection error ", err)
+    );
+    connection.on("close", () => {
+      console.error("RabbitMQ connection . Attempting reconnect...");
+      setTimeout(intializeQueueConneciton, 5000);
+    });
+    console.log("RabbitMQ connected & queue ready:", QUEUE_NAME);
+    return { connection, channel };
+  } catch (error) {
+    console.error("fialed to initialize RabbitMQ connectiion:", error);
+    throw error;
+  }
+}
 // 2️⃣ publishTask(taskData)
 //     - Validate task data structure
 //     - Serialize task for message queue
