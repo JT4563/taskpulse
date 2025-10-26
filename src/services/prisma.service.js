@@ -174,6 +174,20 @@ export async function updateTaskStatus(id, status) {
 //     - Maintain data integrity
 //     - Return deletion status
 //     - Handle referential integrity
+export async function delteTask(id) {
+  if (!id) throw new Error("Task ID is required");
+  try {
+    const delteTask = await primsa.task.update({
+      where: { id: Number(id) },
+      data: { status: "FAILED", updatedAt: new Date() },
+    });
+    console.log(`Task $(id) marked as deleted`);
+    return deltedTask;
+  } catch (err) {
+    consolo.error("Error deleting task", err);
+    throw err;
+  }
+}
 
 // ===============================================
 // 7️⃣ getTaskStatistics()
