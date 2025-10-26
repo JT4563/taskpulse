@@ -54,7 +54,37 @@ export async function initializeQueueConnection() {
     throw error;
   }
 }
+// ===============================================
 // 2️⃣ publishTask(taskData)
+// -----------------------------------------------
+// Publish messages safely to the queue
+// ===============================================
+export async function publishTask(taskData) {
+  try {
+    //     - Validate task data structure
+    if (!taskData || typeof taskData !== "object") {
+      throw new Error("Invalid task data provided to publishTask()");
+    }
+
+    //     - Serialize task for message queue
+    const messageBuffer = Buffer.from(JSON.stringify(taskData));
+
+    //     - Publish message to task queue
+    const published = channel.sendToQueue(QUEUE_NAME, messageBuffer, {
+      persistent: true, // ensure the message survives broker restarts
+    });
+
+    //     - Handle publish confirmations
+    if (published) {
+      console.log(` Task published: ${taskData.id || "(no ID)"}`);
+    } else {
+      console.warn("Message publish returned false (channel backpressure).");
+    }
+  } catch (error) {
+    console.error(" Failed to publish task:", error);
+    throw error;
+  }
+}
 //     - Validate task data structure
 //     - Serialize task for message queue
 //     - Publish message to task queue
